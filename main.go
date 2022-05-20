@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+// Array of clients
+var clients []string
+
 func main() {
 	// Say hello and introduction
 	const conferenceName string = "Go Conference"
@@ -13,8 +16,6 @@ func main() {
 
 	sayHello(conferenceName, availableTickets, remainingTickets)
 
-	// Array of clients 
-	clients := []string{}
 
 	for (remainingTickets > 0) {
 		// Get the client informations
@@ -29,7 +30,8 @@ func main() {
 			} else {
 				remainingTickets = calculateRemainingTickets(ticketsCount, remainingTickets)
 				congrateClient(username, ticketsCount)
-				appendClients(clients, email)
+				clients = append(clients, email)
+				appendClients(clients)
 			}
 		} else {
 			fmt.Println("Sorry, you'r not allowed for booking")
@@ -37,7 +39,6 @@ func main() {
 	}
 }
 
-func appendClients(clients []string, email string) {
-	clients = append(clients, email)
+func appendClients(clients []string) {
 	fmt.Printf("Clients: %v\n", clients)
 }
