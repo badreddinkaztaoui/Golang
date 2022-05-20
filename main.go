@@ -3,11 +3,18 @@ package main
 import (
 	"booking-app/validation"
 	"fmt"
-	"strconv"
 )
 
 // Array of clients
-var clients = make([]map[string]string, 0)
+var clients = make([]ClientData, 0)
+
+// Create a new structure
+type ClientData struct {
+	username string
+	email string
+	age uint
+	ticketsCount uint
+}
 
 func main() {
 	// Say hello and introduction
@@ -33,14 +40,16 @@ func main() {
 				congrateClient(username, ticketsCount)
 
 				// create a map for clients
-				var clientData = make(map[string]string)
-				clientData["username"] = username
-				clientData["email"] = email
-				clientData["age"] = strconv.FormatUint(uint64(age), 10)
-				clientData["ticketsCount"] = strconv.FormatUint(uint64(ticketsCount), 10)
+				var clientData = ClientData {
+					username: username,
+					email: email,
+					age: age,
+					ticketsCount: ticketsCount,
+				}
+			
+				clients = append(clients, clientData)
 
 				// Append client to the console
-				clients = append(clients, clientData)
 				appendClients(clients)
 			}
 		} else {
@@ -49,6 +58,6 @@ func main() {
 	}
 }
 
-func appendClients(clients []map[string]string) {
+func appendClients(clients []ClientData) {
 	fmt.Printf("Clients: %v\n", clients)
 }
