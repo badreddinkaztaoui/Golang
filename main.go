@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 )
 
 func main() {
@@ -10,22 +11,19 @@ func main() {
 	var availableTickets uint = 1400
 	var remainingTickets uint = availableTickets
 
-	fmt.Printf("Welcome to our %v booking application\n", conferenceName)
-	fmt.Printf("We have total of %v ticket and %v are still available\n", availableTickets, remainingTickets)
-	fmt.Println("Get your tickets here to attend")
+	sayHello(conferenceName, availableTickets, remainingTickets)
 
 	// Array of clients 
 	clients := []string{}
 
 	for (remainingTickets > 0) {
-		// Ask users for ther informations
 		var (
 			username string
 			email string
 			age uint
 			ticketsCount uint
 		)
-
+		// Get client main information
 		fmt.Println("Enter your full name: ")
 		fmt.Scanln(&username)
 		fmt.Println("Enter your email: ")
@@ -33,30 +31,60 @@ func main() {
 		fmt.Println("How old are you? ")
 		fmt.Scanln(&age)
 		
-		if (age >= 18) {
-			// Book
-			fmt.Println("How many tickets you want? ")
+		if (isValidClient(username,email, age)) {
+			bookTickets()
 			fmt.Scanln(&ticketsCount)
-			
-			// Inscription message 
+
 			if (ticketsCount > 4 ) {
 				fmt.Println("NOTE! >> You can only book 4 tickets as maximum")
 			} else {
-				// Calculate the remaining tickets
-				remainingTickets = remainingTickets - ticketsCount;
-				// Successfully booking tickets message
-				fmt.Printf("Hello %v. You have booked %v tickets, Thank you\n", username, ticketsCount)
-				fmt.Printf("Remaining tickets:  %v.\n", remainingTickets)
-				// Add client to the database
-				clients = append(clients, username)
-				// Print out all the clients
-				for _, client := range clients {
-					fmt.Println(client)
-				}
+				remainingTickets = calculateRemainingTickets(ticketsCount, remainingTickets)
+				congrateClient(username, ticketsCount)
+				appendClients(clients, email)
 			}
-			fmt.Printf("Clients: %v\n", clients)
 		} else {
-			fmt.Println("Sorry, you'r still young for booking")
+			fmt.Println("Sorry, you'r not allowed for booking")
 		}
 	}
+}
+
+func sayHello(subject string, availableTickets uint, remainingTickets uint) {
+	fmt.Printf("Welcome to our %v booking application 👋\n", subject)
+	fmt.Printf("We have total of %v ticket and %v are still available\n", availableTickets, remainingTickets)
+	fmt.Println("Get your tickets here to attend 🎟️")
+}
+
+func isValidClient(username string, email string, age uint) bool {
+	if (len(username) >= 3 && isEmailValid(email) && age >= 18) {
+		return true
+	}
+	return false
+}
+
+func isEmailValid(email string) bool {
+	emailRegex := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+    return emailRegex.MatchString(email)
+}
+
+
+func bookTickets() {
+	fmt.Println("How many tickets you want? ")
+}
+
+func calculateRemainingTickets(ticketsCount uint, remainingTickets uint) uint {
+	return remainingTickets - ticketsCount
+}
+
+func congrateClient(username string, ticketsCount uint) {
+	fmt.Printf("Hello %v. You have booked %v tickets, Thank you\n", username, ticketsCount)
+}
+
+func appendClients(clients []string, email string) {
+	clients = append(clients, email)
+	// Print out all the clients
+	for _, client := range clients {
+		fmt.Println(client)
+	}
+
+	fmt.Printf("Clients: %v\n", clients)
 }
