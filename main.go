@@ -1,6 +1,7 @@
 package main
 
 import (
+	"booking-app/validation"
 	"fmt"
 )
 
@@ -19,7 +20,7 @@ func main() {
 		// Get the client informations
 		username, email, age := getClientInfo()
 
-		if (isValidClient(username,email, age)) {
+		if (validation.IsValidClient(username,email, age)) {
 			// Ask client for how mus tickets he want to book (maximum: 4)
 			ticketsCount := getTicketsCount()
 			
