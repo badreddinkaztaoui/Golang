@@ -5,9 +5,6 @@ import (
 	"fmt"
 )
 
-// Array of clients
-var clients = make([]ClientData, 0)
-
 // Create a new structure
 type ClientData struct {
 	username string
@@ -15,6 +12,10 @@ type ClientData struct {
 	age uint
 	ticketsCount uint
 }
+
+// Create an Empty List of clients
+var clients = make([]ClientData, 0)
+
 
 func main() {
 	// Say hello and introduction
@@ -48,6 +49,10 @@ func main() {
 				}
 			
 				clients = append(clients, clientData)
+
+				// for _, client := range clients {
+				// 	fmt.Println(client.username)
+				// }
 
 				// Append client to the console
 				appendClients(clients)
